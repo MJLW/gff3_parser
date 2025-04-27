@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
+import gzip
 
 
 def _parse_cols(lines, verbose, return_attrib_dict=False):
@@ -118,8 +119,9 @@ def parse_gff3(filepath, verbose=True, parse_attributes=False):
     :param parse_attributes: (bool, default = False) - Read background in the docstring. Provides additional information but increased runtime.
     :return: pd.DataFrame
     """
-    with open(filepath, 'r') as f:
-        lines = f.readlines()
+    lines = []
+    with gzip.open(filepath, 'rb') as f:
+        lines = [line.decode() for line in f]
     lines = [line.rstrip('\n') for line in lines]
 
 
